@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
-import Button from "../button/button.component"
+import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
-import'./sign-up-form.styles.scss'
+import "./sign-up-form.styles.scss";
+
 const defaultFormFields = {
     displayName: "",
     email: "",
@@ -13,7 +14,6 @@ const defaultFormFields = {
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
-
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
     };
@@ -28,6 +28,7 @@ const SignUpForm = () => {
             const { user } = await createAuthUserWithEmailAndPassword(email, password);
 
             await createUserDocumentFromAuth(user, { displayName });
+            resetFormFields();
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
                 alert("Cannot Create User, Email Already in Use");
@@ -35,7 +36,6 @@ const SignUpForm = () => {
                 console.log("user creation encountered an error", error);
             }
         }
-        resetFormFields();
     };
 
     const handleChange = (event) => {
@@ -44,7 +44,7 @@ const SignUpForm = () => {
     };
 
     return (
-        <div className='sign-up-container'>
+        <div className="sign-up-container">
             <h2>Don't Have an Account?</h2>
             <span>Sign up with your Email and Password</span>
             <form onSubmit={handleSubmit}>
@@ -58,11 +58,11 @@ const SignUpForm = () => {
                 />
 
                 <FormInput
-                    label="Email" 
-                    type="email" 
-                    required 
-                    onChange={handleChange} 
-                    name="email" 
+                    label="Email"
+                    type="email"
+                    required
+                    onChange={handleChange}
+                    name="email"
                     value={email}
                 />
 
