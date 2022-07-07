@@ -38,8 +38,8 @@ const Home = () => {
     ];
     return (
         <div>
-            <Directory categories={categories} />;
-        <Outlet />
+            <Directory categories={categories} />
+            <Outlet />
         </div>
     );
 };
