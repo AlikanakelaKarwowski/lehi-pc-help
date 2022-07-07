@@ -1,12 +1,15 @@
 import { useState } from "react";
+
 import {
     createUserDocumentFromAuth,
-    signInWithGooglePopup,
     signInAuthUserWithEmailAndPassword,
+    signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
+
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sign-in-form.styles.scss";
+
 const defaultFormFields = {
     email: "",
     password: "",
@@ -21,28 +24,25 @@ const SignInForm = () => {
     };
 
     const signInWithGoogle = async () => {
-        const {user} = await signInWithGooglePopup();
-        await createUserDocumentFromAuth(user)
+        await signInWithGooglePopup();
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response)
+            const { user } = await signInAuthUserWithEmailAndPassword(email, password);
         } catch (error) {
-            switch(error.code) {
-                case 'auth/wrong-password':
-                    alert('Email or Password is Incorrect')
-                    break
-                case 'auth/user-not-found':
-                    alert('Email or Password is Incorrect')
-                    break
+            switch (error.code) {
+                case "auth/wrong-password":
+                    alert("Email or Password is Incorrect");
+                    break;
+                case "auth/user-not-found":
+                    alert("Email or Password is Incorrect");
+                    break;
                 default:
-                    console.log(error)
+                    console.log(error);
             }
-            
         }
         resetFormFields();
     };
@@ -57,14 +57,7 @@ const SignInForm = () => {
             <h2>Have an Account?</h2>
             <span>Sign In with your Email and Password</span>
             <form onSubmit={handleSubmit}>
-                <FormInput 
-                    label="Email" 
-                    type="email" 
-                    required 
-                    onChange={handleChange} 
-                    name="email" 
-                    value={email}
-                />
+                <FormInput label="Email" type="email" required onChange={handleChange} name="email" value={email} />
 
                 <FormInput
                     label="Password"
@@ -74,11 +67,11 @@ const SignInForm = () => {
                     name="password"
                     value={password}
                 />
-            <div className="buttons-container">
-                <Button type="submit">Sign In</Button>
-                <Button buttonType="google" onClick={signInWithGoogle}>
-                Google Sign in
-                </Button>
+                <div className="buttons-container">
+                    <Button type="submit">Sign In</Button>
+                    <Button buttonType="google" onClick={signInWithGoogle}>
+                        Google Sign in
+                    </Button>
                 </div>
             </form>
         </div>
